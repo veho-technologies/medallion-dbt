@@ -1,6 +1,8 @@
 SELECT
 -- unique ID
-  order_id::varchar,
+  order_id,
+  updated_at
+/*
 -- other IDs
   facility_id::varchar,
   client_id::varchar,
@@ -39,5 +41,7 @@ SELECT
   client_name::varchar,
   client_display_name::varchar,
   dynamic_link::varchar
+  */
 
-FROM 'awsdatacatalog'. 'dynamodb' where   _type = 'Order' and  _fivetran_deleted is false
+from {{ source('dynamodb', 'lugus')}}
+WHERE   _type = 'Order' and  _fivetran_deleted = false LIMIT 1000

@@ -12,7 +12,6 @@ models:
       incremental_strategy: merge
       sort: _fivetran_synced
       partition_by: [_fivetran_synced, updated_at]
-      write_compression: PARQUET
     columns:
       - name: order_id
         tests:
