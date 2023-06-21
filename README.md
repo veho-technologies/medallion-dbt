@@ -5,7 +5,10 @@ DBT transforms and models for [Project Medallion](https://docs.google.com/docume
 ### Local Development Setup
 
 #### Prerequisite
-Ensure You have access to 1. AWS 2. The `DataAnalyticsAdminAccess` role for the `data` AWS Account
+Ensure You have access to:
+
+1. AWS
+2. The `DataAnalyticsAdminAccess` role for the `data` AWS Account
 
 Then,
 
