@@ -39,3 +39,8 @@ models:
     # Config indicated by + and applies to all files under models/example/
     staging:
       +schema: staging
+
+# athena-utils specific settings
+dispatch:
+  - macro_namespace: dbt_utils
+    search_order: [athena_utils, dbt_utils]
