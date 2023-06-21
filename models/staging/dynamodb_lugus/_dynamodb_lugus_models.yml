@@ -9,6 +9,7 @@ models:
       table_type: iceberg
       unique_key: order_id
       sort: _fivetran_synced
+      partition_by: [_fivetran_synced, updated_at]
     columns:
       - name: order_id
         tests:
