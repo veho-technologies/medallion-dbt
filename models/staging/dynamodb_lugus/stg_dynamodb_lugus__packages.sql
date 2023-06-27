@@ -30,7 +30,7 @@ SELECT
   actual_service_date AT TIME ZONE 'UTC' AS actual_service_date,
   CAST(time_zone AS VARCHAR) AS time_zone,
   consumer_expected_service_date  AT TIME ZONE 'UTC' AS consumer_expected_service_date ,
-  json_extract_scalar(arrival_time_window, '$.startsAt')  AS arrival_time_window_starts_at,
+  json_extract_scalar(arrival_time_window, '$.startsAt')  AS arrival_time_window_starts_at, -- todo @jpmugizi: figure out why cast to timestamp doesnt work, create as varchar for now.
   json_extract_scalar(arrival_time_window, '$.endsAt')  AS arrival_time_window_ends_at,
 
 
