@@ -58,10 +58,10 @@ SELECT
   CAST(signature_required AS BOOLEAN) as signature_required,
 
 -- floats
-  CAST("weight" AS DOUBLE) AS weight,
-  CAST(height_dimension AS DOUBLE) AS height_dimension,
-  CAST(width_dimension AS DOUBLE) AS width_dimension,
-  CAST(length_dimension AS DOUBLE) AS length_dimension,
-  CAST(declared_value AS DOUBLE) AS declared_value
+  CAST("weight" AS REAL) AS weight,
+  CAST(height_dimension AS REAL) AS height_dimension,
+  CAST(width_dimension AS REAL) AS width_dimension,
+  CAST(length_dimension AS REAL) AS length_dimension,
+  CAST(declared_value AS REAL) AS declared_value
 
 FROM SOURCE
