@@ -46,7 +46,7 @@ models:
           - unique
 
   - name: stg_dynamodb_lugus__orderlog
-    description: Sensitive Address data  info from DynamoDB Lugus Table
+    description: Order Log data  from DynamoDB Lugus Table
     config:
       tags: [nwo, inc]
       materialized: table
@@ -64,4 +64,24 @@ models:
       - name: event_sequence_order
         tests:
           - not_null
+  - name: stg_dynamodb_lugus__packagelog
+    description: Package log data  from DynamoDB Lugus Table
+    config:
+      tags: [nwo, inc]
+      materialized: table
+      table_type: iceberg
+      unique_key: [id, event_type, event_sequence_order]
+      sort: [event_type, id, event_sequence_order]
+      partition_by: [_fivetran_synced, updated_at]
+    columns:
+      - name: id
+        tests:
+          - not_null
+      - name: event_type
+        tests:
+          - not_null
+      - name: event_sequence_order
+        tests:
+          - not_null
+
 
