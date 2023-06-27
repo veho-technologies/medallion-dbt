@@ -2,7 +2,7 @@ WITH  SOURCE  AS (
 
   select * from {{ source('dynamodb', 'lugus')}}
   -- not filtering by kind creates duplicate data since every order is associated with
-  -- 2 ordersensitive rows of kind original or current
+  -- 2 ordersensitive rows of kind original or current. We only care about the current address for modeling purposes.
   where _type = 'OrderSensitiveData' and kind = 'current'
 
   {{- incremental_fivetran_synced() -}}
