@@ -30,3 +30,18 @@ models:
         tests:
           - not_null
           - unique
+  - name: stg_dynamodb_lugus__order_sensitive_data
+    description: Sensitive Address data  info from DynamoDB Lugus Table
+    config:
+      tags: [nwo, inc]
+      materialized: table
+      table_type: iceberg
+      unique_key: order_id
+      sort: _fivetran_synced
+      partition_by: [_fivetran_synced, updated_at]
+    columns:
+      - name: address_id
+        tests:
+          - not_null
+          - unique
+
