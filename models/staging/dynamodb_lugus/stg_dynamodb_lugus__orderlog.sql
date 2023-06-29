@@ -41,4 +41,4 @@ SELECT
   CAST(meta['originalSource'] AS VARCHAR) AS original_source,
   CAST(_fivetran_synced AS TIMESTAMP(6)) AS _fivetran_synced
 
-  FROM SOURCE
+FROM SOURCE
