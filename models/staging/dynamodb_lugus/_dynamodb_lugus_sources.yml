@@ -2,6 +2,6 @@ version: 2
 
 sources:
   - name: dynamodb
-    description: location of Athena DB tables
+    description: location of Athena DB DynamoDB tables
     tables:
       - name: lugus

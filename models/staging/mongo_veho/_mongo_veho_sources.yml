@@ -1,0 +1,7 @@
+version: 2
+
+sources:
+  - name: mongo_veho
+    description: location of Athena DB Mongo tables
+    tables:
+      - name: routes

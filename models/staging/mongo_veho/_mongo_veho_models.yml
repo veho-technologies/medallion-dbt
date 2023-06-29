@@ -1,0 +1,17 @@
+version: 2
+
+models:
+  - name: stg_mongo_veho__routes
+    description: order info from our MongoDB packages collection
+    config:
+      tags: [nwo, inc]
+      materialized: incremental
+      table_type: iceberg
+      unique_key: route_id
+      sort: _fivetran_synced
+      partition_by: [_fivetran_synced, updated_at]
+    columns:
+      - name: route_id
+        tests:
+          - not_null
+          - unique

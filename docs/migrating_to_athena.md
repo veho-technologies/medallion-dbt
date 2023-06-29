@@ -4,13 +4,13 @@
 
 ### June 29, 2023
 
-* As of June 29, 2023 This migration guide is for Athena Query Engine 3 and V 1.5 of  [DBT Athena Community Adapter](https://dbt-athena.github.io/)  . Both of these are in active development and subject to change frequently, please check the #data-platform-feed for newer versions and features and update this guide accordingly 
+* As of June 29, 2023 This migration guide is for Athena Query Engine 3 and V 1.5 of  [DBT Athena Community Adapter](https://dbt-athena.github.io/)  . Both of these are in active development and subject to change frequently, please check the #data-platform-feed for newer versions and features and update this guide accordingly
 
 ## Motivation
 
-The Data Platform team is rebuilding the Analytics platform stack through [Project Medallion](https://docs.google.com/document/d/1DaPqowJZwfL17teuwu2bsGxCVNFZ1JktX3pt7g-nEBQ/edit) to improve its performance, reliability, and scalability. As part of Mediallion,  raw data (data coming from upstream sources through [Fivetran](https://fivetran.com/dashboard/connectors)) and staging data(a more cleaned up version of raw data) will start being stored in AWS S3 blob storage instead of Redshift, our data warehouse. 
+The Data Platform team is rebuilding the Analytics platform stack through [Project Medallion](https://docs.google.com/document/d/1DaPqowJZwfL17teuwu2bsGxCVNFZ1JktX3pt7g-nEBQ/edit) to improve its performance, reliability, and scalability. As part of Mediallion,  raw data (data coming from upstream sources through [Fivetran](https://fivetran.com/dashboard/connectors)) and staging data(a more cleaned up version of raw data) will start being stored in AWS S3 blob storage instead of Redshift, our data warehouse.
 
-Data stored in AWS S3 as part of Medallion will be queryable via the Athena Query Engine 3, which is an AWS managed version of  open-source query engine [Trino](https://trino.io/) .  S3 Blobs ("Tables") are stored in Parquet and Apache Iceberg format for fast and efficient querying. Since there are multiple moving parts of this setup, the migration guide will focus solely on converting Redshift SQL to Athena. 
+Data stored in AWS S3 as part of Medallion will be queryable via the Athena Query Engine 3, which is an AWS managed version of  open-source query engine [Trino](https://trino.io/) .  S3 Blobs ("Tables") are stored in Parquet and Apache Iceberg format for fast and efficient querying. Since there are multiple moving parts of this setup, the migration guide will focus solely on converting Redshift SQL to Athena.
 
 
 
@@ -25,38 +25,38 @@ You only have access to the `TIMESTAMP(6)` datatype, if you have an ISO 8601 for
 #### JSON is not supported with Apache Iceberg Tables
 
 * **For flat JSON data** (for .e.g `{'key1': 'value'}` ) use the  `MAP<data_type, data_type> `  type .
-  
+
   e.g:
-  
+
   ```sql
   WITH SOURCE AS (
       CAST(json_parse(meta) AS MAP<VARCHAR, VARCHAR>) AS meta
   )
-  
-  SELECT 
+
+  SELECT
    CAST(meta['reason'] AS VARCHAR) AS service_date_change_reason,
    CAST(meta['slaDeliveryDate'] AS VARCHAR) AS sla_delivery_date,
    CAST(meta['originalSource'] AS VARCHAR) AS original_source,
   FROM SOURCE
   ```
-  
+
   `MAP` requires to explicitly known and set the key and value types ahead of time. So for instance, `MAP<VARCHAR, ANY>` is not valid. What we recommend is using `MAP<VARCHAR, VARCHAR>` then, `CAST` ing the values directly as you flattens them like in the above example
 
 * **For nested JSON data** (for e.g `{'key1': {'key2':'value'}`)
-  
+
   Use `the json_extract_scalar` function. For example, use
-  
+
   ```sql
   CAST(json_extract_scalar(address, '$.location.source') AS VARCHAR) AS coordinates_source,
   CAST(json_extract_scalar(address, '$.location.lat') AS REAL) AS lat,
   CAST(json_extract_scalar(address, '$.location.lng') AS REAL) AS lng,
-  
-  
+
+
   ```
 
     to extract data from `"address": {"location": {"lat": -1, "lng": -0.203, "source": "mapquest" }}`
 
-Although you can use json_extract with flat json data as well, `MAP` is more efficient than `json_extract_scalar` , so prefer using that data type whenever you have flat JSON data. 
+Although you can use json_extract with flat json data as well, `MAP` is more efficient than `json_extract_scalar` , so prefer using that data type whenever you have flat JSON data.
 
 
 
@@ -87,12 +87,14 @@ You need to use the `CAST(my_column as <ATHENA_DATA_TYPE>`) as shown in the exam
 ### Troubleshooting
 
 * **botocore.errorfactory.InvalidRequestException: An error occurred (InvalidRequestException) when calling the StartQueryExecution operation: line 16:25: mismatched input ':'**
-  
+
   This seems to happen sporadically because of incremental syncs - Use full refresh and it should be back to working normally
-  
+
    `dbt run --full-refresh --select my_model`
-  
-  
+
+* **Not supported in Hive table**
+
+The Athena adapter creates Hive Tables by default, make sure to specify explicitly in the `_models.yml` config file that you want to materialize with `table_type: iceberg`
 
 ## Useful Documentation
 
@@ -102,4 +104,4 @@ You need to use the `CAST(my_column as <ATHENA_DATA_TYPE>`) as shown in the exam
 
 * **Trino Query Engine SQL Functions Reference** : https://trino.io/docs/current/functions/list-by-topic.html
 
-* **DBT Athena Adapter** https://dbt-athena.github.io/ 
+* **DBT Athena Adapter** https://dbt-athena.github.io/
