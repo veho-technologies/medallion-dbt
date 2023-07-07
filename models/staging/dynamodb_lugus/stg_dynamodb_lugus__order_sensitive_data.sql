@@ -6,6 +6,7 @@ WITH  SOURCE  AS (
   where _type = 'OrderSensitiveData' and kind = 'current'
 
   {{- incremental_fivetran_synced() -}}
+  {{- limit_rows_date('_fivetran_synced', -1, 'week') -}}
   {{- not_fivetran_deleted() -}}
 
 ),

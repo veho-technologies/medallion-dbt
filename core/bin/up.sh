@@ -82,7 +82,7 @@ echo "Exporting Your DBT and AWS Credential Profiles..."
 
 export MEDALLION_DBT_ROOT=$(echo "$PWD")
 export AWS_PROFILE=DataAnalyticsAdminAccess
-export MEDALLION_DBT_PROFILE=medallion-athena-poc
+export MEDALLION_DBT_PROFILE=medallion-athena-dev
 export MEDALLION_DBT_USER_SCHEMA=$(aws sts get-caller-identity --query UserId --output text | awk -F ':' '{print $2}' | awk -F '@' '{print $1}' | tr -d .)
 
 source ~/.pyenv/versions/medallion/bin/activate

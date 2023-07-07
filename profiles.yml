@@ -2,17 +2,31 @@ config:
   send_anonymous_usage_stats: False
   use_colors: True
 
-medallion-athena-poc:
+medallion-athena-dev:
   target: dev
   outputs:
     dev:
       type: athena
-      s3_staging_dir: s3://athena-query-results-veho/athena-poc-stage/
-      s3_data_dir	: s3://data-platform-athena-data-prod/poc/ # TODO @jpmugizi change to data-platform-athena-poc when created
+      s3_staging_dir: s3://athena-query-results-veho/medallion-staging-local/
+      s3_data_dir	: s3://data-platform-athena-data-dev/local-dev/
       s3_data_naming: schema_table_unique
       region_name: us-east-1
       database: awsdatacatalog
       workgroup: primary
       schema: "{{ env_var('MEDALLION_DBT_USER_SCHEMA') }}"
       aws_profile_name: "{{ env_var('AWS_PROFILE') }}"
+      threads: 4
+
+medallion-athena-prod:
+  target: prod
+  outputs:
+    prod:
+      type: athena
+      s3_staging_dir: s3://athena-query-results-veho/medallion-staging-prod/
+      s3_data_dir	: s3://data-platform-athena-data-prod/
+      s3_data_naming: schema_table_unique
+      region_name: us-east-1
+      database: awsdatacatalog
+      workgroup: primary
+      schema: analytics
       threads: 8

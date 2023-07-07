@@ -47,7 +47,7 @@ select
     CAST(updated_at AS TIMESTAMP(6)) AS updated_at,
 
     --fivetran
-    CAST(_fivetran_deleted AS BOOLEAN) _fivetran_deleted,
-    CAST(_fivetran_synced AS TIMESTAMP(6)) _fivetran_synced
+    CAST(_fivetran_deleted AS BOOLEAN) AS _fivetran_deleted,
+    CAST(_fivetran_synced AS TIMESTAMP(6)) AS _fivetran_synced
 
 FROM source

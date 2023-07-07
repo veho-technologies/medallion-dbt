@@ -3,6 +3,7 @@ WITH SOURCE AS (
  WHERE  1=1 AND _type = 'Order'
 
  {{- incremental_fivetran_synced() -}}
+ {{- limit_rows_date('_fivetran_synced', -1, 'week') -}}
  {{- not_fivetran_deleted() -}}
 
 )
