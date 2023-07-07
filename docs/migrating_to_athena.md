@@ -86,12 +86,6 @@ You need to use the `CAST(my_column as <ATHENA_DATA_TYPE>`) as shown in the exam
 
 ### Troubleshooting
 
-* **botocore.errorfactory.InvalidRequestException: An error occurred (InvalidRequestException) when calling the StartQueryExecution operation: line 16:25: mismatched input ':'**
-
-  This seems to happen sporadically because of incremental syncs - Use full refresh and it should be back to working normally
-
-   `dbt run --full-refresh --select my_model`
-
 * **Not supported in Hive table**
 
 The Athena adapter creates Hive Tables by default, make sure to specify explicitly in the `_models.yml` config file that you want to materialize with `table_type: iceberg`
