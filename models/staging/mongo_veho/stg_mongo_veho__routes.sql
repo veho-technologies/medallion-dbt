@@ -7,6 +7,7 @@ source as (
   where 1=1
 
   {{ incremental_fivetran_synced() }}
+  {{ limit_rows_date('_fivetran_synced', 'week', -1) }}
 
 )
 
@@ -46,7 +47,7 @@ select
     CAST(updated_at AS TIMESTAMP(6)) AS updated_at,
 
     --fivetran
-    CAST(_fivetran_deleted AS BOOLEAN) as_fivetran_deleted,
-    CAST(_fivetran_synced AS TIMESTAMP(6)) as_fivetran_synced
+    CAST(_fivetran_deleted AS BOOLEAN) _fivetran_deleted,
+    CAST(_fivetran_synced AS TIMESTAMP(6)) _fivetran_synced
 
 FROM source
