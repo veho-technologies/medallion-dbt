@@ -1,5 +1,5 @@
 WITH SOURCE AS (
- select * from {{ source('dynamodb', 'lugus')}}
+ select * from {{ source('dynamodb_lugus', 'lugus')}}
  WHERE  1=1 AND _type = 'Package'
 
  {{- incremental_fivetran_synced() -}}

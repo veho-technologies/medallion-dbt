@@ -15,7 +15,7 @@ WITH SOURCE AS (
 
     _fivetran_synced
 
-  from {{ source('dynamodb', 'lugus') }}
+  from {{ source('dynamodb_lugus', 'lugus') }}
   where 1=1
   and _type = 'PackageLog'
   {{- incremental_fivetran_synced() -}}
