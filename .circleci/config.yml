@@ -16,6 +16,7 @@ jobs:
       - aws-ecr/build-and-push-image:
           repo: "medallion-dbt"
           tag: '$CIRCLE_SHA1,latest'
+          role-arn: $VEHO_DATA_CIRCLE_CI_ROLE
 
   build-DAGS:
     docker:
@@ -43,6 +44,7 @@ jobs:
             --delete
           from: /tmp/dags
           to: s3://data-platform-dags-bucket-prod/DAGs/medallion-dbt
+          role-arn: $VEHO_DATA_CIRCLE_CI_ROLE
 
 only_some_branches: &only_some_branches
   filters:
@@ -56,11 +58,13 @@ workflows:
     jobs:
       - build-and-push-docker-image:
           <<: *only_some_branches
+          context: aws-platform
       - build-DAGS:
           <<: *only_some_branches
           requires:
             - build-and-push-docker-image
       - deploy-DAGs-to-S3:
           <<: *only_some_branches
+          context: aws-platform
           requires:
             - build-DAGS

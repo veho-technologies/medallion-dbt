@@ -1,18 +1,23 @@
 - dbt_job_name: stg_dynamodb_lugus__order_sensitive_data
   schedule: "0 0 * * *"
   tags: ["staging", "lugus"]
+
 - dbt_job_name: stg_dynamodb_lugus__orderlog
   schedule: "0 0 * * *"
   tags: ["staging", "lugus"]
+
 - dbt_job_name: stg_dynamodb_lugus__orders
   schedule: "0 0 * * *"
   tags: ["staging", "lugus"]
+
 - dbt_job_name: stg_dynamodb_lugus__packagelog
   schedule: "0 0 * * *"
   tags: ["staging", "lugus"]
+
 - dbt_job_name: stg_dynamodb_lugus__packages
   schedule: "0 0 * * *"
   tags: ["staging", "lugus"]
+
 - dbt_job_name: stg_mongo_veho__routes
   schedule: "0 0 * * *"
   tags: ["staging", "mongo_veho"]
