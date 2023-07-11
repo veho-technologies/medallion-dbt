@@ -13,21 +13,11 @@ jobs:
       docker_layer_caching: true
     steps:
       - checkout
-      - aws-cli/setup:
+      - aws-ecr/build-and-push-image:
+          repo: medallion-dbt
+          tag: '$CIRCLE_SHA1,latest'
           role-arn: $VEHO_DATA_CIRCLE_CI_ROLE
-      - run:
-          name: Get caller identity
-          command: aws sts get-caller-identity
-      - run:
-          name: Log into ECR
-          command: aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin "680267403278.dkr.ecr.us-east-1.amazonaws.com"
-      - run:
-          name: Build and push image
-          command: docker buildx build -f ./Dockerfile -t 680267403278.dkr.ecr.us-east-1.amazonaws.com/medallion-dbt:$CIRCLE_SHA1 -t 680267403278.dkr.ecr.us-east-1.amazonaws.com/medallion-dbt:latest --platform linux/amd64 --progress plain --push .
-      # - aws-ecr/build-and-push-image:
-      #     repo: medallion-dbt
-      #     tag: '$CIRCLE_SHA1,latest'
-      #     role-arn: $VEHO_DATA_CIRCLE_CI_ROLE
+          assume-web-identity: true
 
   build-DAGS:
     docker:
