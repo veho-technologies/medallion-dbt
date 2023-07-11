@@ -12,6 +12,7 @@ jobs:
       image: ubuntu-2004:2023.04.2
       docker_layer_caching: true
     steps:
+      - checkout
       - run:
           name: Log into ECR
           command: aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin "$AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com"
