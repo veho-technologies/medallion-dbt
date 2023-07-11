@@ -12,9 +12,10 @@ jobs:
       image: ubuntu-2004:2023.04.2
       docker_layer_caching: true
     steps:
-      - checkout
+      - run:
+          command: aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin "680267403278.dkr.ecr.us-east-1.amazonaws.com"
       - aws-ecr/build-and-push-image:
-          repo: "medallion-dbt"
+          repo: medallion-dbt
           tag: '$CIRCLE_SHA1,latest'
           role-arn: $VEHO_DATA_CIRCLE_CI_ROLE
 
