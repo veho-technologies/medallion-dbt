@@ -16,6 +16,7 @@ jobs:
       - aws-ecr/build-and-push-image:
           repo: "medallion-dbt"
           tag: '$CIRCLE_SHA1,latest'
+          registry-id: '680267403278'
           role-arn: $VEHO_DATA_CIRCLE_CI_ROLE
 
   build-DAGS:
