@@ -1,0 +1,64 @@
+version: 2.1
+
+orbs:
+  aws-ecr: circleci/aws-ecr@8.2.1
+  aws-cli: circleci/aws-cli@3.1.1
+  aws-s3: circleci/aws-s3@3.1.1
+
+jobs:
+  build-and-push-docker-image:
+    executor: aws-ecr/default
+    machine:
+      image: ubuntu-2004:2023.04.2
+      docker_layer_caching: true
+    steps:
+      - checkout
+      - aws-ecr/build-and-push-image:
+          repo: "medallion-dbt"
+          tag: '$CIRCLE_SHA1,latest'
+
+  build-DAGS:
+    docker:
+      - image: cimg/python:3.8
+    steps:
+      - checkout
+      - run:
+          command: pip install -r core/dag_generation/requirements.txt
+      - run:
+          command: mkdir -p dags && python3 core/dag_generation/generate_dags.py
+      - persist_to_workspace:
+          root: dags
+          paths:
+            - .
+
+  deploy-DAGs-to-S3:
+    docker:
+      - image: cimg/python:3.10
+    steps:
+      - checkout
+      - attach_workspace:
+          at: /tmp/dags
+      - aws-s3/sync:
+          arguments: |
+            --delete
+          from: /tmp/dags
+          to: s3://data-platform-dags-bucket-prod/DAGs/medallion-dbt
+
+only_some_branches: &only_some_branches
+  filters:
+    branches:
+      only:
+        - main
+        - push-image
+
+workflows:
+  build-and-deploy:
+    jobs:
+      - build-and-push-docker-image:
+          <<: *only_some_branches
+      - build-DAGS:
+          <<: *only_some_branches
+      - deploy-DAGs-to-S3:
+          <<: *only_some_branches
+          requires:
+            - build-DAGS
