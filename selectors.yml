@@ -1,0 +1,19 @@
+selectors:
+  - name: staging_models
+    definition:
+      union:
+        - method: fqn
+          value: "*"
+        - exclude:
+            - method: fqn
+              value: stg_dynamodb_lugus__order_sensitive_data
+            - method: fqn
+              value: stg_dynamodb_lugus__orderlog
+            - method: fqn
+              value: stg_dynamodb_lugus__orders
+            - method: fqn
+              value: stg_dynamodb_lugus__packagelog
+            - method: fqn
+              value: stg_dynamodb_lugus__packages
+            - method: fqn
+              value: stg_mongo_veho__routes
