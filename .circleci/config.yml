@@ -58,6 +58,8 @@ workflows:
           <<: *only_some_branches
       - build-DAGS:
           <<: *only_some_branches
+          requires:
+            - build-and-push-docker-image
       - deploy-DAGs-to-S3:
           <<: *only_some_branches
           requires:
