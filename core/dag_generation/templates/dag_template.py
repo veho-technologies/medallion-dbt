@@ -15,7 +15,7 @@ with DAG('dbt.{{dbt_job_name}}', description='DBT Task running - {{dbt_job_name}
           tags=["repo:medallion-dbt", "dbt", "{{ tags|join('\",\"')}}"]):
 
     cluster_name = "medallion-dbt"
-    task_definition_name = "dbt-run"
+    task_definition_name = "medallion-dbt-run"
 
     dbt_ecs_operator = EcsOperator(
         task_id="ecs_run_{{dbt_job_name}}",
@@ -41,7 +41,7 @@ with DAG('dbt.{{dbt_job_name}}', description='DBT Task running - {{dbt_job_name}
         },
         reattach=True,
         awslogs_group="/ecs/medallion-dbt-run",
-        awslogs_stream_prefix="ecs/medallion-dbt/"
+        awslogs_stream_prefix="ecs/medallion-dbt"
     )
 
     dbt_ecs_operator
