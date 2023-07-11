@@ -34,8 +34,8 @@ with DAG('dbt.{{dbt_job_name}}', description='DBT Task running - {{dbt_job_name}
         },
         network_configuration={
             "awsvpcConfiguration": {
-                "subnets": ["subnet-0f56c0f0d3ef65fad", "subnet-07ea66eb5992d1026"],
-                "securityGroups": ["sg-0191d202f900b6845"],
+                "subnets": ["subnet-0f13024214fe8248a", "subnet-07942ea20b0cea893"],
+                "securityGroups": ["sg-02e07527d3854470b"],
                 "assignPublicIp": "DISABLED",
             },
         },
