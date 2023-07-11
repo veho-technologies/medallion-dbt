@@ -15,10 +15,10 @@ jobs:
       - checkout
       - run:
           name: Log into ECR
-          command: aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin "$AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com"
+          command: aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin "680267403278.dkr.ecr.us-east-1.amazonaws.com"
       - run:
           name: Build and push image
-          command: docker buildx build -f ./Dockerfile -t $AWS_ECR_REGISTRY_ID.dkr.ecr.$AWS_REGION.amazonaws.com/medallion-dbt:$CIRCLE_SHA1 -t $AWS_ECR_REGISTRY_ID.dkr.ecr.$AWS_REGION.amazonaws.com/medallion-dbt:latest --platform linux/amd64 --progress plain --push .
+          command: docker buildx build -f ./Dockerfile -t 680267403278.dkr.ecr.us-east-1.amazonaws.com/medallion-dbt:$CIRCLE_SHA1 -t 680267403278.dkr.ecr.us-east-1.amazonaws.com/medallion-dbt:latest --platform linux/amd64 --progress plain --push .
       # - aws-ecr/build-and-push-image:
       #     repo: medallion-dbt
       #     tag: '$CIRCLE_SHA1,latest'
