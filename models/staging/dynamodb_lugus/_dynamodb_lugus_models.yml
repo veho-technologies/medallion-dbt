@@ -64,6 +64,7 @@ models:
       - name: timestamp
         tests:
           - not_null
+
   - name: stg_dynamodb_lugus__packagelog
     description: Package log data  from DynamoDB Lugus Table
     config:

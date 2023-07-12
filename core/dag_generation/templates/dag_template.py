@@ -41,7 +41,7 @@ with DAG('dbt.{{dbt_job_name}}', description='DBT Task running - {{dbt_job_name}
         },
         reattach=True,
         awslogs_group="/ecs/medallion-dbt-run",
-        awslogs_stream_prefix="ecs/medallion-dbt/"
+        awslogs_stream_prefix="ecs/medallion-dbt"
     )
 
     dbt_ecs_operator
