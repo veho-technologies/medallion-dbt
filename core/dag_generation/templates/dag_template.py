@@ -25,7 +25,7 @@ with DAG('dbt.{{dbt_job_name}}', description='DBT Task running - {{dbt_job_name}
         overrides={
             "containerOverrides": [
                 {
-                    "name": "dbt",
+                    "name": "medallion-dbt",
                     "command": [
                         "--select", "{{dbt_job_name}}"
                     ],
